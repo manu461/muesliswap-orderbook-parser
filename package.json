@@ -1,0 +1,17 @@
+{
+  "name": "muesliswap-orderbook-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "author": "Manu Rastogi",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^17.0.8",
+    "dotenv": "^10.0.0",
+    "html-to-json": "^0.6.0",
+    "puppeteer": "^13.0.1"
+  }
+}
