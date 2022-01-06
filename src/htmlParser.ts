@@ -27,9 +27,9 @@ function stringToModel(orders: string[]): OrderBookModel {
         order.Amount = amountParser(orders[index]);
         order.PricePerToken = pricePerTokenParser(orders[index + 1]);
         order.Total = totalParser(orders[index + 2]);
-        if (orders[index + 3] === 'SELL') {
+        if (orders[index + 3] === 'BUY') { // BUY button is for a sell order
             sellOrders.push(order)
-        } else if (orders[index + 3] === 'BUY') {
+        } else if (orders[index + 3] === 'SELL') { // SELL button is for a buy order
             buyOrders.push(order)
         }
     }
