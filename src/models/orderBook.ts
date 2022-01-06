@@ -4,7 +4,7 @@ export interface OrderBookModel {
 }
 
 export interface Order {
-    Amount: string,
-    PricePerToken: string,
-    Total: string,
+    Amount: number,
+    PricePerToken: number,
+    Total: number,
 }
