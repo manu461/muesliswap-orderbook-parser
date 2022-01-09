@@ -36,6 +36,8 @@ export function matchOrder(rawOrderBook: OrderBookModel): OrderBookModel {
             resolvedBuyOrders.push(order);
         }
     }
+    resolvedBuyOrders.sort((a, b) => (a.PricePerToken > b.PricePerToken ? -1 : 1));
+    resolvedSellOrders.sort((a, b) => (a.PricePerToken < b.PricePerToken ? -1 : 1));
     resolvedOrderBookModel.buyOrders = resolvedBuyOrders;
     resolvedOrderBookModel.sellOrders = resolvedSellOrders;
     return resolvedOrderBookModel;
