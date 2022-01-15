@@ -1,4 +1,4 @@
-import { amountParser, pricePerTokenParser, totalParser } from "./attributeParser";
+import { amountParser, pricePerTokenParser } from "./attributeParser";
 import { Order, OrderBookModel } from "./models/orderBook";
 
 var htmlToJson = require('html-to-json');
@@ -26,7 +26,7 @@ function stringToModel(orders: string[]): OrderBookModel {
         const order = <Order>{};
         order.Amount = amountParser(orders[index]);
         order.PricePerToken = pricePerTokenParser(orders[index + 1]);
-        order.Total = totalParser(orders[index + 2]);
+        order.Total = order.Amount * order.PricePerToken;
         if (orders[index + 3] === 'BUY') { // BUY button is for a sell order
             sellOrders.push(order)
         } else if (orders[index + 3] === 'SELL') { // SELL button is for a buy order

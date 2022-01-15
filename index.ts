@@ -8,14 +8,18 @@ require('dotenv').config()
 async function main() {
     const currentTickerUrl = config.Assets[config.CurrentTicker];
     const htmlString = await requestHtml(currentTickerUrl);
-    var orderBookModel = await htmlToJsonParser(htmlString)
-    const buyVolume = getBuyVolume(orderBookModel.buyOrders)
-    const sellVolume = getSellVolume(orderBookModel.sellOrders)
-    // console.log(orderBookModel.buyOrders);
-    // console.log(orderBookModel.sellOrders);
+
+    var orderBookModel = await htmlToJsonParser(htmlString);
+    const buyVolume = getBuyVolume(orderBookModel.buyOrders);
+    const sellVolume = getSellVolume(orderBookModel.sellOrders);
     console.log(`Buy Volume : ${buyVolume}`);
     console.log(`Sell Volume : ${sellVolume}`);
-    console.log(matchOrder(orderBookModel));
+
+    const resolvedOrderBookModel = matchOrder(orderBookModel);
+    const resolvedBuyVolume = getBuyVolume(resolvedOrderBookModel.buyOrders);
+    const resolvedSellVolume = getSellVolume(resolvedOrderBookModel.sellOrders);
+    console.log(`Resolved Buy Volume : ${resolvedBuyVolume}`);
+    console.log(`Resolved Sell Volume : ${resolvedSellVolume}`);
 }
 
 main();
