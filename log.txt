@@ -1,4 +1,4 @@
-Buy Volume : 98840.0953
-Sell Volume : 1208990.43859
-Resolved Buy Volume : 98715.29529999998
-Resolved Sell Volume : 1208865.6385899999
+Buy Volume : 119864.98029999998
+Sell Volume : 1221103.73859
+Resolved Buy Volume : 119556.6803
+Resolved Sell Volume : 1220795.43859

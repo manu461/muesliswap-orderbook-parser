@@ -3,9 +3,9 @@ import { Order, OrderBookModel } from "./models/orderBook";
 
 var htmlToJson = require('html-to-json');
 
-export function htmlToJsonParser(html: string): Promise<OrderBookModel> {
+export function htmlOrderToJsonOrderParser(htmlOrder: string): Promise<OrderBookModel> {
     return new Promise<OrderBookModel>((resolve, reject) => {
-        htmlToJson.parse(html, function () {
+        htmlToJson.parse(htmlOrder, function () {
             return this.map('p', function ($item: { text: () => any; }) {
                 return $item.text();
             });
@@ -15,7 +15,6 @@ export function htmlToJsonParser(html: string): Promise<OrderBookModel> {
             reject(err);
         });
     });
-
 }
 
 function stringToModel(orders: string[]): OrderBookModel {
@@ -36,4 +35,24 @@ function stringToModel(orders: string[]): OrderBookModel {
     orderBookModel.buyOrders = buyOrders;
     orderBookModel.sellOrders = sellOrders
     return orderBookModel;
+}
+
+
+export async function htmlListingToJsonListingParser(htmlListing: string): Promise<Map<string, string>> {
+    const listingMap = new Map<string, string>();
+    var linkParser = htmlToJson.createParser(['a[href]', {
+        'text': function ($a: { text: () => any; }) {
+            return $a.text();
+        },
+        'href': function ($a: { attr: (arg0: string) => any; }) {
+            return $a.attr('href');
+        }
+    }]);
+    const links: { text: string, href: string }[] = await linkParser.parse(htmlListing);
+    links.forEach((link) => {
+        if (link.href.includes('/markets/token')) {
+            listingMap.set(link.text.split(' ')[1], link.href);
+        }
+    })
+    return listingMap;
 }
