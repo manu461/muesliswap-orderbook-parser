@@ -11,5 +11,5 @@ export function amountParser(amount: string): number {
 }
 
 export function pricePerTokenParser(pricePerToken: string): number {
-    return parseFloat(pricePerToken);
+    return parseFloat(pricePerToken.replace(',', ''));
 }

@@ -1,6 +1,6 @@
 import { config } from "./config/config";
 import { getAllListings, getListingUrlByTicker, storeListingInJson } from "./src/listingUtils";
-import { htmlOrderToJsonOrderParser } from "./src/htmlParser";
+import { htmlMarketDataToJsonMarketParser, htmlOrderToJsonOrderParser } from "./src/htmlParser";
 import { requestHtml } from "./src/htmlRequester";
 import { getBuyVolume, getSellVolume, matchOrder } from "./src/matchingEngine";
 
@@ -23,6 +23,9 @@ async function main() {
     const resolvedSellVolume = getSellVolume(resolvedOrderBookModel.sellOrders);
     console.log(`Resolved Buy Volume : ${resolvedBuyVolume}`);
     console.log(`Resolved Sell Volume : ${resolvedSellVolume}`);
+
+    const marketData = await htmlMarketDataToJsonMarketParser(htmlString);
+    console.log(`Market Data: ${JSON.stringify(marketData)}`);
 
 
 

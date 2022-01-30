@@ -1,4 +1,5 @@
 import { amountParser, pricePerTokenParser } from "./attributeParser";
+import { MarketData } from "./models/marketData";
 import { Order, OrderBookModel } from "./models/orderBook";
 
 var htmlToJson = require('html-to-json');
@@ -21,7 +22,7 @@ function stringToModel(orders: string[]): OrderBookModel {
     const orderBookModel = <OrderBookModel>{};
     const buyOrders = <Order[]>[];
     const sellOrders = <Order[]>[];
-    for (let index = 4; index < orders.length; index += 4) {
+    for (let index = 5; index < orders.length; index += 4) {
         const order = <Order>{};
         order.Amount = amountParser(orders[index]);
         order.PricePerToken = pricePerTokenParser(orders[index + 1]);
@@ -55,4 +56,32 @@ export async function htmlListingToJsonListingParser(htmlListing: string): Promi
         }
     })
     return listingMap;
+}
+
+export async function htmlMarketDataToJsonMarketParser(htmlMarketData: string): Promise<MarketData> {
+    const marketData = <MarketData>{};
+    const search = "height: min-content;";
+    const marketCapAfter = 239;
+    const circulatingSupplyAfter = 408;
+    const totalSupplyAfter = 571;
+    const indexOfSearch = htmlMarketData.indexOf(search);
+    const marketCap = extractMarketDataFromHtmString(htmlMarketData, indexOfSearch + marketCapAfter);
+    const circulatingSupply = extractMarketDataFromHtmString(htmlMarketData, indexOfSearch + circulatingSupplyAfter);
+    const totalSupply = extractMarketDataFromHtmString(htmlMarketData, indexOfSearch + totalSupplyAfter);
+    marketData.marketCap = marketCap;
+    marketData.circulatingSupply = circulatingSupply;
+    marketData.totalSupply = totalSupply;
+    return marketData;
+}
+
+function extractMarketDataFromHtmString(htmlMarketData: string, indexAfter: number): number {
+    let attributeValue = '';
+    let i = indexAfter;
+    while (htmlMarketData[i] != ' ') {
+        if (htmlMarketData[i] != ',') {
+            attributeValue = attributeValue.concat(htmlMarketData[i])
+        }
+        i++;
+    }
+    return +attributeValue;
 }

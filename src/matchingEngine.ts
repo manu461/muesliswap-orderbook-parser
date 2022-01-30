@@ -1,3 +1,4 @@
+import { config } from '../config/config';
 import { Order, OrderBookModel } from './models/orderBook';
 
 export function matchOrder(rawOrderBook: OrderBookModel): OrderBookModel {
@@ -45,16 +46,24 @@ export function matchOrder(rawOrderBook: OrderBookModel): OrderBookModel {
 
 export function getBuyVolume(buyOrders: Order[]): number {
     let buyVolume = 0;
+    buyOrders.sort((a: Order, b: Order) => (a.PricePerToken > b.PricePerToken ? -1 : 1));
+    const range = buyOrders[0].PricePerToken / config.MultiplicationFactor
     buyOrders.forEach((buyOrder) => {
-        buyVolume += buyOrder.Total
+        if (buyOrder.PricePerToken >= range) {
+            buyVolume += buyOrder.Total
+        }
     })
     return buyVolume;
 }
 
 export function getSellVolume(sellOrders: Order[]): number {
     let sellVolume = 0;
+    sellOrders.sort((a: Order, b: Order) => (a.PricePerToken < b.PricePerToken ? -1 : 1));
+    const range = sellOrders[0].PricePerToken * config.MultiplicationFactor
     sellOrders.forEach((sellOrder) => {
-        sellVolume += sellOrder.Total
+        if (sellOrder.PricePerToken <= range) {
+            sellVolume += sellOrder.Total
+        }
     })
     return sellVolume;
 }

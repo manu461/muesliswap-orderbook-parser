@@ -1,4 +1,5 @@
 export const config = {
     BaseUrl: "https://ada.muesliswap.com",
-    CurrentTicker: "MILK"
+    CurrentTicker: "MILK",
+    MultiplicationFactor: 1.5
 }
